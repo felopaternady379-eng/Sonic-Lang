@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "🔹 إعداد Git"
+git config --global user.name "Felopater Nady"
+git config --global user.email "felopaternady379@gmail.com"
+
+echo "🚀 بدء رفع مشروع Sonic-Lang على GitHub …"
+
+# تهيئة git لو مش موجود
+if [ ! -d ".git" ]; then
+    git init
+    echo "✅ تم إنشاء مشروع Git محلي"
+fi
+
+# إضافة كل الملفات
+git add .
+echo "✅ تم إضافة الملفات"
+
+# commit
+git commit -m "Initial commit — SonicLang Complete"
+
+# ربط الريبو البعيد لو مش مرتبط
+if ! git remote | grep -q origin; then
+    git remote add origin https://github.com/felopaternady379-eng/Sonic-Lang.git
+    echo "✅ تم ربط الريبو البعيد"
+fi
+
+# دفع الملفات
+echo "🔐 هيتطلب إدخال GitHub Token (كلمة السر) عند الطلب"
+git push -u origin master
+
+echo "🎉 تم رفع المشروع بنجاح!"

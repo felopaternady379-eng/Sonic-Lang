@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# === إعداد المتغيرات ===
+REPO_URL="https://github.com/felopaternady379-eng/Sonic-Lang.git"
+LOCAL_DIR="$PWD"   # المجلد الحالي فيه المشروع
+BRANCH="main"
+
+# === بداية السكريبت ===
+echo "🚀 بدء رفع مشروع Sonic-Lang على GitHub"
+
+# التأكد من وجود git
+if ! command -v git &> /dev/null
+then
+    echo "❌ git غير مثبت. حاول تثبته أولاً: pkg install git"
+    exit 1
+fi
+
+# الانتقال لمجلد المشروع
+cd "$LOCAL_DIR" || { echo "❌ المجلد غير موجود"; exit 1; }
+
+# تهيئة git لو لم يكن موجود
+if [ ! -d ".git" ]; then
+    git init
+    echo "✅ مشروع Git محلي تم إنشاؤه"
+fi
+
+# إضافة كل الملفات
+git add .
+
+# إنشاء commit
+read -p "اكتب رسالة الـ commit: " COMMIT_MSG
+git commit -m "$COMMIT_MSG"
+
+# ربط الريبو البعيد لو لم يكن موجود
+if ! git remote | grep -q origin; then
+    git remote add origin "$REPO_URL"
+    echo "✅ تم ربط الريبو البعيد"
+fi
+
+# إنشاء branch رئيسي
+git branch -M "$BRANCH"
+
+# رفع الملفات
+echo "🔒 هتحتاج تدخل الـ GitHub Token ككلمة سر عند الطلب"
+git push -u origin "$BRANCH"
+
+echo "🎉 تم رفع المشروع بنجاح!"
